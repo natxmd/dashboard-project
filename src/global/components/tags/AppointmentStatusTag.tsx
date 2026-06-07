@@ -6,39 +6,40 @@ interface Props {
 
 const statusConfig = {
   [EAppointmentStatus.CREATE]: {
-    label: "Pendiente",
-    className: "bg-yellow-50 text-yellow-600",
+    label: "Nueva Cita",
+    className: "bg-indigo-50 text-indigo-600 border border-indigo-100",
   },
 
   [EAppointmentStatus.CONFIRMED]: {
-    label: "Confirmada",
-    className: "bg-green-50 text-green-600",
+    label: "Paciente Nuevo",
+    className: "bg-indigo-50 text-indigo-600 border border-indigo-100",
   },
 
   [EAppointmentStatus.DECLINED]: {
-    label: "Rechazada",
-    className: "bg-red-50 text-red-600",
+    label: "Cita Rechazada",
+    className: "bg-red-50 text-red-600 border border-red-100",
   },
 
   [EAppointmentStatus.COMPLETED]: {
-    label: "Completada",
-    className: "bg-blue-50 text-blue-600",
+    label: "Sesión Realizada",
+    className: "bg-emerald-500 text-white border border-emerald-600",
   },
 
   [EAppointmentStatus.CANCELED]: {
-    label: "Cancelada",
-    className: "bg-gray-100 text-gray-600",
+    label: "Cita Cancelada",
+    className: "bg-gray-100 text-gray-600 border border-gray-200",
   },
 };
 
 const AppointmentStatusTag = ({ status }: Props) => {
   const config = statusConfig[status];
+  const isCompleted = status === EAppointmentStatus.COMPLETED;
 
   return (
     <div
-      className={`rounded-full px-4 py-1 text-xs font-medium ${config.className}`}
+      className={`rounded-full px-4 py-1 text-xs font-medium flex items-center gap-1.5 ${config.className}`}
     >
-      ● {config.label}
+      {isCompleted ? "✓" : "●"} {config.label}
     </div>
   );
 };
