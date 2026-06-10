@@ -1,19 +1,34 @@
+import { useState } from "react";
 import AppointmentCard from "../../../global/components/cards/CardAppoiment";
 import { EAppointmentStatus, EAppointmentModality } from "../../../interfaces/appointment.interface";
 import { useFetchAppointments } from "../appoiments-history/hooks/useFetchAppointments";
 import { getScheduledAppointmentFields } from "./utils/fields-card-scheduled-appointments";
+import ConfirmAppointmentModal from "../../../global/components/modals/ConfirmAppointmentModal";
+import DeclineAppointmentModal from "../../../global/components/modals/DeclineAppointmentModal";
 
 const MainScheduledAppointmentsPage = () => {
   const { appointments, loading, error, refetch } = useFetchAppointments([
     EAppointmentStatus.CONFIRMED,
   ]);
+  const [selectedCancelId, setSelectedCancelId] = useState<string | null>(null);
+  const [selectedCompleteId, setSelectedCompleteId] = useState<string | null>(null);
 
-  const handleComplete = (appointmentId: string) => {
-    console.log("Completar:", appointmentId);
+  const handleCompleteTrigger = (appointmentId: string) => {
+    setSelectedCompleteId(appointmentId);
   };
 
-  const handleCancel = (appointmentId: string) => {
-    console.log("Cancelar:", appointmentId);
+  const handleCompleteModalAction = () => {
+    console.log("Cita Realizada / Completada:", selectedCompleteId);
+    setSelectedCompleteId(null);
+  };
+
+  const handleCancelTrigger = (appointmentId: string) => {
+    setSelectedCancelId(appointmentId);
+  };
+
+  const handleCancelModalAction = (reason: string) => {
+    console.log("Cancelar cita:", selectedCancelId, "Razón:", reason);
+    setSelectedCancelId(null);
   };
 
   const totalVirtual = appointments.filter((a) => a.modality === EAppointmentModality.VIRTUAL).length;
@@ -76,12 +91,37 @@ const MainScheduledAppointmentsPage = () => {
               key={appointment.id}
               appointment={appointment}
               fields={getScheduledAppointmentFields(appointment)}
-              onComplete={handleComplete}
-              onCancel={handleCancel}
+              onComplete={handleCompleteTrigger}
+              onCancel={handleCancelTrigger}
             />
           ))}
         </div>
       )}
+
+      <ConfirmAppointmentModal
+        isOpen={selectedCompleteId !== null}
+        onClose={() => setSelectedCompleteId(null)}
+        onConfirm={handleCompleteModalAction}
+        title="Cita Realizada"
+        description={
+          <p>
+            ¿Está seguro que desea marcar esta cita como <span className="font-semibold text-gray-900">realizada</span>?
+          </p>
+        }
+        confirmText="Confirmar"
+        cancelText="Cancelar"
+      />
+
+      <DeclineAppointmentModal
+        isOpen={selectedCancelId !== null}
+        onClose={() => setSelectedCancelId(null)}
+        onDecline={handleCancelModalAction}
+        title="Cancelar Cita"
+        actionText="cancelar"
+        confirmText="Sí, cancelar"
+        cancelText="No, cancelar"
+        placeholder="Escriba el motivo de la cancelación aquí..."
+      />
     </div>
   );
 };

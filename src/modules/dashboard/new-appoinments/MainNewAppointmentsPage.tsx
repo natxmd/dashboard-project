@@ -1,13 +1,29 @@
+import { useState } from "react";
 import { appointmentsMock } from "../../../datamock";
 import AppointmentCard from "../../../global/components/cards/CardAppoiment";
+import ConfirmAppointmentModal from "../../../global/components/modals/ConfirmAppointmentModal";
+import DeclineAppointmentModal from "../../../global/components/modals/DeclineAppointmentModal";
 
 const MainNewAppointmentsPage = () => {
-  const handleConfirm = (appointmentId: string) => {
-    console.log("Confirmar", appointmentId);
+  const [selectedConfirmId, setSelectedConfirmId] = useState<string | null>(null);
+  const [selectedDeclineId, setSelectedDeclineId] = useState<string | null>(null);
+
+  const handleConfirmTrigger = (appointmentId: string) => {
+    setSelectedConfirmId(appointmentId);
   };
 
-  const handleDecline = (appointmentId: string) => {
-    console.log("Rechazar", appointmentId);
+  const handleDeclineTrigger = (appointmentId: string) => {
+    setSelectedDeclineId(appointmentId);
+  };
+
+  const handleConfirmModalAction = () => {
+    console.log("Confirmar cita:", selectedConfirmId);
+    setSelectedConfirmId(null);
+  };
+
+  const handleDeclineModalAction = (reason: string) => {
+    console.log("Rechazar cita:", selectedDeclineId, "Razón:", reason);
+    setSelectedDeclineId(null);
   };
 
   const handleComplete = (appointmentId: string) => {
@@ -29,13 +45,25 @@ const MainNewAppointmentsPage = () => {
           <AppointmentCard
             key={appointment.id}
             appointment={appointment}
-            onConfirm={handleConfirm}
-            onDecline={handleDecline}
+            onConfirm={handleConfirmTrigger}
+            onDecline={handleDeclineTrigger}
             onComplete={handleComplete}
             onCancel={handleCancel}
           />
         ))}
       </div>
+
+      <ConfirmAppointmentModal
+        isOpen={selectedConfirmId !== null}
+        onClose={() => setSelectedConfirmId(null)}
+        onConfirm={handleConfirmModalAction}
+      />
+
+      <DeclineAppointmentModal
+        isOpen={selectedDeclineId !== null}
+        onClose={() => setSelectedDeclineId(null)}
+        onDecline={handleDeclineModalAction}
+      />
     </div>
   );
 };
