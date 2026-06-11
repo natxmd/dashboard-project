@@ -27,7 +27,6 @@ const AppointmentCard = ({
 
     return (
         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-            {/* Header */}
             <div className="flex items-center justify-between p-3">
                 <AppointmentStatusTag status={appointment.status} />
                 <div className="flex items-center gap-2 text-xs text-gray-400">
@@ -36,7 +35,6 @@ const AppointmentCard = ({
                 </div>
             </div>
 
-            {/* Body */}
             <div className="grid grid-cols-3 border-y border-gray-200">
                 {displayFields.map((field) => (
                     <AppointmentInfoField
@@ -47,7 +45,6 @@ const AppointmentCard = ({
                 ))}
             </div>
 
-            {/* Footer */}
             {(() => {
                 const hasActions = [EAppointmentStatus.CREATE, EAppointmentStatus.CONFIRMED].includes(appointment.status);
                 return (
@@ -69,14 +66,6 @@ const AppointmentCard = ({
                     </div>
                 );
             })()}
-
-            {/* Motivo */}
-            {[EAppointmentStatus.DECLINED, EAppointmentStatus.CANCELED].includes(appointment.status) && appointment.reason && (
-                <div className="border-t border-gray-200 bg-red-50 px-6 py-3">
-                    <p className="text-xs font-medium text-red-500">Motivo</p>
-                    <p className="mt-1 text-sm text-red-700">{appointment.reason}</p>
-                </div>
-            )}
         </div>
     );
 };

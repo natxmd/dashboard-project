@@ -1,10 +1,17 @@
 import { useState } from "react";
-import { appointmentsMock } from "../../../datamock";
 import AppointmentCard from "../../../global/components/cards/CardAppoiment";
 import ConfirmAppointmentModal from "../../../global/components/modals/ConfirmAppointmentModal";
 import DeclineAppointmentModal from "../../../global/components/modals/DeclineAppointmentModal";
+import { useFetchAppointments } from "../hooks/useFetchAppointments";
+import { useChangeAppointmentStatus } from "../hooks/useChangeAppointmentStatus";
+import { EAppointmentStatus } from "../../../interfaces/appointment.interface";
 
 const MainNewAppointmentsPage = () => {
+  const { appointments, loading, error, refetch } = useFetchAppointments([
+    EAppointmentStatus.CREATE,
+  ]);
+  const { changeStatus } = useChangeAppointmentStatus();
+  
   const [selectedConfirmId, setSelectedConfirmId] = useState<string | null>(null);
   const [selectedDeclineId, setSelectedDeclineId] = useState<string | null>(null);
 
@@ -16,13 +23,27 @@ const MainNewAppointmentsPage = () => {
     setSelectedDeclineId(appointmentId);
   };
 
-  const handleConfirmModalAction = () => {
-    console.log("Confirmar cita:", selectedConfirmId);
+  const handleConfirmModalAction = async () => {
+    if (selectedConfirmId) {
+      try {
+        await changeStatus(selectedConfirmId, EAppointmentStatus.CONFIRMED);
+        refetch();
+      } catch (err) {
+        console.error(err);
+      }
+    }
     setSelectedConfirmId(null);
   };
 
-  const handleDeclineModalAction = (reason: string) => {
-    console.log("Rechazar cita:", selectedDeclineId, "Razón:", reason);
+  const handleDeclineModalAction = async () => {
+    if (selectedDeclineId) {
+      try {
+        await changeStatus(selectedDeclineId, EAppointmentStatus.DECLINED);
+        refetch();
+      } catch (err) {
+        console.error(err);
+      }
+    }
     setSelectedDeclineId(null);
   };
 
@@ -40,18 +61,45 @@ const MainNewAppointmentsPage = () => {
         Nuevas Citas
       </h1>
 
-      <div className="space-y-5">
-        {appointmentsMock.map((appointment) => (
-          <AppointmentCard
-            key={appointment.id}
-            appointment={appointment}
-            onConfirm={handleConfirmTrigger}
-            onDecline={handleDeclineTrigger}
-            onComplete={handleComplete}
-            onCancel={handleCancel}
-          />
-        ))}
-      </div>
+      {loading && (
+        <div className="py-20 text-center">
+          <p className="text-gray-500 font-medium">Cargando nuevas citas...</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="p-6 bg-white border border-gray-200 rounded-xl text-center shadow-sm max-w-md mx-auto">
+          <h3 className="text-base font-semibold text-gray-800">Error al cargar las citas</h3>
+          <p className="text-sm text-gray-500 mt-1">No se pudo conectar con el servidor.</p>
+          <button
+            onClick={refetch}
+            className="mt-4 rounded-lg bg-gray-800 px-4 py-2 text-xs font-semibold text-white hover:bg-gray-900 transition"
+          >
+            Reintentar
+          </button>
+        </div>
+      )}
+
+      {!loading && !error && appointments.length === 0 && (
+        <div className="py-16 text-center bg-white border border-gray-200 rounded-xl shadow-sm">
+          <p className="text-sm text-gray-500">No hay nuevas citas actualmente.</p>
+        </div>
+      )}
+
+      {!loading && !error && appointments.length > 0 && (
+        <div className="space-y-5">
+          {appointments.map((appointment) => (
+            <AppointmentCard
+              key={appointment.id}
+              appointment={appointment}
+              onConfirm={handleConfirmTrigger}
+              onDecline={handleDeclineTrigger}
+              onComplete={handleComplete}
+              onCancel={handleCancel}
+            />
+          ))}
+        </div>
+      )}
 
       <ConfirmAppointmentModal
         isOpen={selectedConfirmId !== null}

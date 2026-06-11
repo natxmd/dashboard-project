@@ -26,20 +26,21 @@ const statusConfig = {
   },
 
   [EAppointmentStatus.CANCELED]: {
-    label: "Cita Cancelada",
-    className: "bg-gray-100 text-gray-600 border border-gray-200",
+    label: "Sesión cancelada",
+    className: "bg-[#de4343] text-white border border-[#d63d3d]",
   },
 };
 
 const AppointmentStatusTag = ({ status }: Props) => {
   const config = statusConfig[status];
   const isCompleted = status === EAppointmentStatus.COMPLETED;
+  const isCanceled = status === EAppointmentStatus.CANCELED;
 
   return (
     <div
       className={`rounded-full px-4 py-1 text-xs font-medium flex items-center gap-1.5 ${config.className}`}
     >
-      {isCompleted ? "✓" : "●"} {config.label}
+      {isCompleted ? "✓" : isCanceled ? "✕" : "●"} {config.label}
     </div>
   );
 };

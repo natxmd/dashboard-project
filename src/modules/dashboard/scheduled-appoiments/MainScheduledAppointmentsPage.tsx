@@ -1,7 +1,8 @@
 import { useState } from "react";
 import AppointmentCard from "../../../global/components/cards/CardAppoiment";
 import { EAppointmentStatus, EAppointmentModality } from "../../../interfaces/appointment.interface";
-import { useFetchAppointments } from "../appoiments-history/hooks/useFetchAppointments";
+import { useFetchAppointments } from "../hooks/useFetchAppointments";
+import { useChangeAppointmentStatus } from "../hooks/useChangeAppointmentStatus";
 import { getScheduledAppointmentFields } from "./utils/fields-card-scheduled-appointments";
 import ConfirmAppointmentModal from "../../../global/components/modals/ConfirmAppointmentModal";
 import DeclineAppointmentModal from "../../../global/components/modals/DeclineAppointmentModal";
@@ -10,6 +11,8 @@ const MainScheduledAppointmentsPage = () => {
   const { appointments, loading, error, refetch } = useFetchAppointments([
     EAppointmentStatus.CONFIRMED,
   ]);
+  const { changeStatus } = useChangeAppointmentStatus();
+  
   const [selectedCancelId, setSelectedCancelId] = useState<string | null>(null);
   const [selectedCompleteId, setSelectedCompleteId] = useState<string | null>(null);
 
@@ -17,8 +20,15 @@ const MainScheduledAppointmentsPage = () => {
     setSelectedCompleteId(appointmentId);
   };
 
-  const handleCompleteModalAction = () => {
-    console.log("Cita Realizada / Completada:", selectedCompleteId);
+  const handleCompleteModalAction = async () => {
+    if (selectedCompleteId) {
+      try {
+        await changeStatus(selectedCompleteId, EAppointmentStatus.COMPLETED);
+        refetch();
+      } catch (err) {
+        console.error(err);
+      }
+    }
     setSelectedCompleteId(null);
   };
 
@@ -26,8 +36,15 @@ const MainScheduledAppointmentsPage = () => {
     setSelectedCancelId(appointmentId);
   };
 
-  const handleCancelModalAction = (reason: string) => {
-    console.log("Cancelar cita:", selectedCancelId, "Razón:", reason);
+  const handleCancelModalAction = async () => {
+    if (selectedCancelId) {
+      try {
+        await changeStatus(selectedCancelId, EAppointmentStatus.CANCELED);
+        refetch();
+      } catch (err) {
+        console.error(err);
+      }
+    }
     setSelectedCancelId(null);
   };
 

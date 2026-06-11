@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { EAppointmentStatus, type IAppointment } from "../../../../interfaces/appointment.interface";
+import { EAppointmentStatus, type IAppointment } from "../../../interfaces/appointment.interface";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "https://gestion-citas-d3ux.onrender.com";
 
@@ -8,12 +8,16 @@ export const useFetchAppointments = (statuses: EAppointmentStatus[]) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const statusesKey = statuses.join(",");
+
   const fetchAppointments = useCallback(async () => {
+    await Promise.resolve();
     setLoading(true);
     setError(null);
 
     try {
-      const fetchPromises = statuses.map(async (status) => {
+      const statusList = statusesKey.split(",") as EAppointmentStatus[];
+      const fetchPromises = statusList.map(async (status) => {
         const url = `${API_BASE_URL}/appointments/fetch-appointments?status=${status}`;
         const response = await fetch(url, {
           method: "POST",
@@ -21,15 +25,15 @@ export const useFetchAppointments = (statuses: EAppointmentStatus[]) => {
         });
 
         if (response.status === 404) return [];
-        if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
 
         const json = await response.json();
-        const data: any[] = json.data || [];
+        const data: Record<string, unknown>[] = json.data || [];
 
         return data.map((item) => ({
           ...item,
-          createAt: item.createdAt || item.createAt || new Date().toISOString(),
-        })) as IAppointment[];
+          createAt: String(item.createdAt || item.createAt || new Date().toISOString()),
+        })) as unknown as IAppointment[];
       });
 
       const results = await Promise.all(fetchPromises);
@@ -40,17 +44,23 @@ export const useFetchAppointments = (statuses: EAppointmentStatus[]) => {
       });
 
       setAppointments(sorted);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const errorMsg = err instanceof Error ? err.message : String(err);
       console.error(err);
-      setError(err.message || "Error al obtener las citas.");
+      setError(errorMsg || "Error al obtener las citas.");
     } finally {
       setLoading(false);
     }
-  }, [JSON.stringify(statuses)]);
+  }, [statusesKey]);
 
   useEffect(() => {
-    fetchAppointments();
+    const timer = setTimeout(() => {
+      fetchAppointments();
+    }, 0);
+    return () => clearTimeout(timer);
   }, [fetchAppointments]);
 
   return { appointments, loading, error, refetch: fetchAppointments };
 };
+
+export default useFetchAppointments;

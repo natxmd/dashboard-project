@@ -1,6 +1,6 @@
 import AppointmentCard from "../../../global/components/cards/CardAppoiment";
 import { EAppointmentStatus } from "../../../interfaces/appointment.interface";
-import { useFetchAppointments } from "./hooks/useFetchAppointments";
+import { useFetchAppointments } from "../hooks/useFetchAppointments";
 import { getHistoryAppointmentFields } from "./utils/fields-card-appoiments-history";
 
 const MainAppointmentsHistoryPage = () => {
