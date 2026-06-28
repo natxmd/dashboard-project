@@ -7,10 +7,12 @@ const MainAppointmentsHistoryPage = () => {
   const { appointments, loading, error, refetch } = useFetchAppointments([
     EAppointmentStatus.COMPLETED,
     EAppointmentStatus.CANCELED,
+    EAppointmentStatus.DECLINED,
   ]);
 
   const totalCompleted = appointments.filter((a) => a.status === EAppointmentStatus.COMPLETED).length;
   const totalCanceled = appointments.filter((a) => a.status === EAppointmentStatus.CANCELED).length;
+  const totalDeclined = appointments.filter((a) => a.status === EAppointmentStatus.DECLINED).length;
 
   return (
     <div className="min-h-screen bg-[#F7F7F7] p-6">
@@ -19,7 +21,7 @@ const MainAppointmentsHistoryPage = () => {
       </h1>
 
       {!loading && !error && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
           <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
             <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Historial</p>
             <h3 className="text-2xl font-bold text-gray-800 mt-1">{appointments.length}</h3>
@@ -33,6 +35,11 @@ const MainAppointmentsHistoryPage = () => {
           <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
             <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Canceladas</p>
             <h3 className="text-2xl font-bold text-gray-800 mt-1">{totalCanceled}</h3>
+          </div>
+
+          <div className="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Rechazadas</p>
+            <h3 className="text-2xl font-bold text-gray-800 mt-1">{totalDeclined}</h3>
           </div>
         </div>
       )}
