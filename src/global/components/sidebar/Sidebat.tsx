@@ -1,9 +1,21 @@
 import { FiHome, FiCalendar, FiClock, FiBookOpen, FiLogOut } from "react-icons/fi";
-
+import { useNavigate } from "react-router-dom";
 import SidebarItem from "./ItemSidebar";
 import { ERoutes } from "../../../routes.enum";
+import { supabase } from "../../../lib/supabase";
 
 const Sidebar = () => {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        try {
+            await supabase.auth.signOut();
+            navigate("/login");
+        } catch (err: unknown) {
+            console.error("Error signing out:", err);
+            navigate("/login");
+        }
+    };
     return (
         <aside
             className=" flex h-screen w-72 flex-col px-6 py-8
@@ -15,7 +27,7 @@ const Sidebar = () => {
                 </h1>
 
                 <p className="mt-2 text-sm text-zinc-500">
-                    Appointment Manager
+                    Gestor de Citas
                 </p>
             </div>
 
@@ -51,6 +63,7 @@ const Sidebar = () => {
                 <div className="h-px bg-zinc-900" />
 
                 <button
+                    onClick={handleLogout}
                     className="
             mt-4
             flex
@@ -62,6 +75,7 @@ const Sidebar = () => {
             py-3
             text-zinc-400
             transition-all hover:bg-red-500/10 hover:text-red-500
+            cursor-pointer
         "
                 >
                     <FiLogOut size={20} />
@@ -69,7 +83,7 @@ const Sidebar = () => {
                 </button>
 
                 <p className="mt-4 text-xs text-zinc-600">
-                    Admin Panel v1.0
+                    Panel de Admin v1.0
                 </p>
             </div>
         </aside>

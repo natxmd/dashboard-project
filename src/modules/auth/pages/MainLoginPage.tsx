@@ -1,24 +1,45 @@
 import { useState } from "react";
 import LabelInput from "../../../global/components/forms/LabelInputs";
 import { useNavigate } from "react-router-dom";
+import { supabase } from "../../../lib/supabase";
 
 const MainLoginPage = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     const navigate = useNavigate();
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+        setError("");
 
-        if (username === "root" && password === "root") {
-            setError("");
+        try {
+            const { error: signInError } = await supabase.auth.signInWithPassword({
+                email: username,
+                password: password,
+            });
+
+            if (signInError) {
+                if (signInError.message === "Invalid login credentials") {
+                    setError("Credenciales incorrectas. Verifique su correo y contraseña.");
+                } else if (signInError.message === "Email not confirmed") {
+                    setError("El correo electrónico aún no ha sido confirmado.");
+                } else {
+                    setError(signInError.message);
+                }
+                return;
+            }
+
             navigate("/");
-            return;
+        } catch (err: unknown) {
+            console.error(err);
+            setError("Ocurrió un error inesperado al iniciar sesión.");
+        } finally {
+            setLoading(false);
         }
-
-        setError("Invalid credentials");
     };
 
     return (
@@ -37,11 +58,11 @@ const MainLoginPage = () => {
             >
                 <div className="mb-8 text-center">
                     <h1 className="text-4xl font-bold text-white">
-                        Sign In
+                        Iniciar Sesión
                     </h1>
 
                     <p className="mt-2 text-sm text-zinc-500">
-                        Access the administration panel
+                        Accede al panel de administración
                     </p>
                 </div>
 
@@ -50,18 +71,22 @@ const MainLoginPage = () => {
                     className="flex flex-col gap-5"
                 >
                     <LabelInput
-                        label="Username"
-                        placeholder="root"
+                        label="Correo Electrónico"
+                        placeholder="ejemplo@correo.com"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        disabled={loading}
+                        required
                     />
 
                     <LabelInput
-                        label="Password"
+                        label="Contraseña"
                         type="password"
                         placeholder="••••••••"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        disabled={loading}
+                        required
                     />
 
                     {error && (
@@ -72,7 +97,8 @@ const MainLoginPage = () => {
 
                     <button
                         type="submit"
-                        className="
+                        disabled={loading}
+                        className={`
                             mt-2
                             rounded-xl
                             bg-white
@@ -81,16 +107,15 @@ const MainLoginPage = () => {
                             text-black
                             transition-all
                             duration-200
-                            hover:scale-[1.01]
-                            hover:bg-zinc-200
-                        "
+                            ${loading ? "opacity-50 cursor-not-allowed" : "hover:scale-[1.01] hover:bg-zinc-200"}
+                        `}
                     >
-                        Sign In
+                        {loading ? "Iniciando Sesión..." : "Ingresar"}
                     </button>
                 </form>
 
                 <div className="mt-6 text-center text-xs text-zinc-600">
-                    Demo credentials: root / root
+                    Panel de Administración de Citas
                 </div>
             </div>
         </div>

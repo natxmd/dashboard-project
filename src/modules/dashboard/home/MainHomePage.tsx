@@ -23,17 +23,17 @@ const MainHomePage = () => {
 
             <div>
                 <h1 className="text-4xl font-bold text-zinc-900">
-                    Welcome Back 👋
+                    ¡Bienvenida! 👋
                 </h1>
 
                 <p className="mt-2 text-zinc-500">
-                    Manage appointments and monitor your activity from one place.
+                    Gestiona tus citas y monitorea tu actividad desde un solo lugar.
                 </p>
             </div>
 
             {loading && (
                 <div className="mt-10 py-16 text-center border border-zinc-150 rounded-3xl bg-zinc-50/50">
-                    <p className="text-zinc-500 font-medium">Cargando métricas en tiempo real...</p>
+                    <p className="text-zinc-500 font-medium">Cargando métricas...</p>
                 </div>
             )}
 
@@ -55,7 +55,7 @@ const MainHomePage = () => {
 
                     <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
                         <p className="text-sm text-zinc-500">
-                            New Appointments
+                            Nuevas Citas
                         </p>
 
                         <h2 className="mt-2 text-4xl font-bold text-zinc-900">
@@ -63,13 +63,13 @@ const MainHomePage = () => {
                         </h2>
 
                         <p className="mt-2 text-sm text-success">
-                            Pending review
+                            Pendientes de revisión
                         </p>
                     </div>
 
                     <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
                         <p className="text-sm text-zinc-500">
-                            Scheduled
+                            Citas Programadas
                         </p>
 
                         <h2 className="mt-2 text-4xl font-bold text-zinc-900">
@@ -77,13 +77,13 @@ const MainHomePage = () => {
                         </h2>
 
                         <p className="mt-2 text-sm text-primary">
-                            Upcoming appointments
+                            Próximas citas
                         </p>
                     </div>
 
                     <div className="rounded-3xl border border-zinc-200 bg-white p-6 shadow-sm">
                         <p className="text-sm text-zinc-500">
-                            History
+                            Historial
                         </p>
 
                         <h2 className="mt-2 text-4xl font-bold text-zinc-900">
@@ -91,7 +91,7 @@ const MainHomePage = () => {
                         </h2>
 
                         <p className="mt-2 text-sm text-zinc-500">
-                            Completed / Cancelled / Rejected
+                            Completadas / Canceladas / Rechazadas
                         </p>
                     </div>
 
@@ -100,13 +100,13 @@ const MainHomePage = () => {
 
             <div className="mt-10 rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
                 <h3 className="text-xl font-semibold text-zinc-900">
-                    Welcome to your Dashboard
+                    Bienvenida a tu Panel de Control
                 </h3>
 
                 <p className="mt-3 max-w-2xl text-zinc-500">
-                    From here you can review new appointment requests,
-                    manage scheduled appointments and access the complete
-                    history of consultations.
+                    Desde aquí puedes revisar las nuevas solicitudes de citas,
+                    gestionar las citas programadas y acceder al historial completo
+                    de las consultas.
                 </p>
             </div>
 
