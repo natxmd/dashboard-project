@@ -6,4 +6,5 @@ export enum ERoutes {
     newAppointments = "/new-appointments",
     scheduledAppointments = "/scheduled-appointments",
     appointmentsHistory = "/appointments-history",
+    schedulingManagement = "/scheduling-management",
 }

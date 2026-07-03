@@ -57,6 +57,11 @@ const Sidebar = () => {
                     label="Historial"
                     to={ERoutes.appointmentsHistory}
                 />
+                <SidebarItem
+                    icon={FiClock}
+                    label="Horarios"
+                    to={ERoutes.schedulingManagement}
+                />
             </nav>
 
             <div className="mt-auto">
