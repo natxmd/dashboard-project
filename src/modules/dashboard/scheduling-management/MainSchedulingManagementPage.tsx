@@ -158,7 +158,7 @@ const MainSchedulingManagementPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F7F7F7] p-6  max-w-4xl mx-auto">
+    <div className="min-h-screen bg-[#F7F7F7] p-6  max-w-xl mx-auto">
       <div className="w-full flex flex-col gap-6">
         <div className="bg-white border border-slate-200 rounded-2xl p-6">
           <h1 className="text-2xl font-semibold text-slate-950">
