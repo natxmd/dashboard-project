@@ -6,6 +6,7 @@ import { useChangeAppointmentStatus } from "../hooks/useChangeAppointmentStatus"
 import { getScheduledAppointmentFields } from "./utils/fields-card-scheduled-appointments";
 import ConfirmAppointmentModal from "../../../global/components/modals/ConfirmAppointmentModal";
 import DeclineAppointmentModal from "../../../global/components/modals/DeclineAppointmentModal";
+import LoadingPage from "../../../global/components/loading/LoadingPage";
 
 const MainScheduledAppointmentsPage = () => {
   const { appointments, loading, error, refetch } = useFetchAppointments([
@@ -77,9 +78,9 @@ const MainScheduledAppointmentsPage = () => {
       )}
 
       {loading && (
-        <div className="py-20 text-center">
-          <p className="text-gray-500 font-medium">Cargando citas programadas...</p>
-        </div>
+        <LoadingPage
+            message="Cargando citas programadas..."
+        />
       )}
 
       {error && (

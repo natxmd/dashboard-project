@@ -5,6 +5,7 @@ import DeclineAppointmentModal from "../../../global/components/modals/DeclineAp
 import { useFetchAppointments } from "../hooks/useFetchAppointments";
 import { useChangeAppointmentStatus } from "../hooks/useChangeAppointmentStatus";
 import { EAppointmentStatus } from "../../../interfaces/appointment.interface";
+import LoadingPage from "../../../global/components/loading/LoadingPage";
 
 const MainNewAppointmentsPage = () => {
   const { appointments, loading, error, refetch } = useFetchAppointments([
@@ -62,9 +63,9 @@ const MainNewAppointmentsPage = () => {
       </h1>
 
       {loading && (
-        <div className="py-20 text-center">
-          <p className="text-gray-500 font-medium">Cargando nuevas citas...</p>
-        </div>
+          <LoadingPage
+              message="Cargando nuevas citas..."
+          />
       )}
 
       {error && (

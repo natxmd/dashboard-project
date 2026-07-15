@@ -5,6 +5,7 @@ import {
   getSlotsByRangeService,
   type ISlotDay,
 } from "./services/get-slots-by-range.service";
+import LoadingPage from "../../../global/components/loading/LoadingPage";
 
 const DEFAULT_HOURS = [
   "08:00",
@@ -284,7 +285,7 @@ const MainSchedulingManagementPage = () => {
           </div>
 
           {loadingSlots ? (
-            <p className="text-sm text-slate-500">Cargando horarios...</p>
+            <LoadingPage message="Cargando horarios..." />
           ) : slotDays.length > 0 ? (
             <div className="border border-slate-200 rounded-xl overflow-hidden">
               <table className="w-full text-sm">

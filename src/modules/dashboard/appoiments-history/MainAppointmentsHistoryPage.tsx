@@ -2,6 +2,7 @@ import AppointmentCard from "../../../global/components/cards/CardAppoiment";
 import { EAppointmentStatus } from "../../../interfaces/appointment.interface";
 import { useFetchAppointments } from "../hooks/useFetchAppointments";
 import { getHistoryAppointmentFields } from "./utils/fields-card-appoiments-history";
+import LoadingPage from "../../../global/components/loading/LoadingPage";
 
 const MainAppointmentsHistoryPage = () => {
   const { appointments, loading, error, refetch } = useFetchAppointments([
@@ -45,9 +46,9 @@ const MainAppointmentsHistoryPage = () => {
       )}
 
       {loading && (
-        <div className="py-20 text-center">
-          <p className="text-gray-500 font-medium">Cargando el historial de citas...</p>
-        </div>
+        <LoadingPage
+          message="Cargando historial..."
+        />
       )}
 
       {error && (
