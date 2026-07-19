@@ -1,4 +1,5 @@
-import { FiHome, FiCalendar, FiClock, FiBookOpen, FiLogOut } from "react-icons/fi";
+import { FiHome, FiCalendar, FiClock, FiBookOpen, FiLogOut  } from "react-icons/fi";
+import { RiMentalHealthLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import SidebarItem from "./ItemSidebar";
 import { ERoutes } from "../../../routes.enum";
@@ -61,6 +62,11 @@ const Sidebar = () => {
                     icon={FiClock}
                     label="Horarios"
                     to={ERoutes.schedulingManagement}
+                />
+                <SidebarItem
+                    icon={RiMentalHealthLine}
+                    label="Servicios"
+                    to={ERoutes.catalog}
                 />
             </nav>
 

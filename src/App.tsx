@@ -7,6 +7,7 @@ import MainScheduledAppointmentsPage from "./modules/dashboard/scheduled-appoime
 import MainAppointmentsHistoryPage from "./modules/dashboard/appoiments-history/MainAppointmentsHistoryPage";
 import { ERoutes } from "./routes.enum";
 import MainSchedulingManagementPage from "./modules/dashboard/scheduling-management/MainSchedulingManagementPage";
+import MainCatalogPage from "./modules/dashboard/catalog/MainCatalogPage";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path={ERoutes.scheduledAppointments} element={<MainScheduledAppointmentsPage />} />
         <Route path={ERoutes.appointmentsHistory} element={<MainAppointmentsHistoryPage />} />
         <Route path={ERoutes.schedulingManagement} element={<MainSchedulingManagementPage />} />
+        <Route path={ERoutes.catalog} element={<MainCatalogPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to={ERoutes.login} />} />
