@@ -52,4 +52,8 @@ export const getScheduledAppointmentFields = (appointment: IAppointment): IAppoi
         label: "Contacto",
         text: `${appointment.customer.phone} / ${appointment.customer.email}`,
     },
+    {
+        label: "Motivo de Consulta",
+        text: appointment.description || "No especificado",
+    },
 ];

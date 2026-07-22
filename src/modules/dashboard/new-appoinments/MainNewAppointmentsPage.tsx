@@ -35,10 +35,10 @@ const MainNewAppointmentsPage = () => {
     setSelectedConfirmId(null);
   };
 
-  const handleDeclineModalAction = async () => {
+  const handleDeclineModalAction = async (reason: string) => {
     if (selectedDeclineId) {
       try {
-        await changeStatus(selectedDeclineId, EAppointmentStatus.DECLINED);
+        await changeStatus(selectedDeclineId, EAppointmentStatus.DECLINED, reason);
         refetch();
       } catch (err) {
         console.error(err);

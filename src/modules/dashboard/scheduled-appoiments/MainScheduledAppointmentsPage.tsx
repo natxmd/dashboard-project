@@ -36,10 +36,10 @@ const MainScheduledAppointmentsPage = () => {
     setSelectedCancelId(appointmentId);
   };
 
-  const handleCancelModalAction = async () => {
+  const handleCancelModalAction = async (reason: string) => {
     if (selectedCancelId) {
       try {
-        await changeStatus(selectedCancelId, EAppointmentStatus.CANCELED);
+        await changeStatus(selectedCancelId, EAppointmentStatus.CANCELED, reason);
         refetch();
       } catch (err) {
         console.error(err);

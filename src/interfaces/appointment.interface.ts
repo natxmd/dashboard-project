@@ -36,6 +36,7 @@ export interface IAppointment {
     paymentMethodType: EPaymentMethodType;
     appointmentDateTime: string;
     createAt: string
-    reason?: string; 
+    reason?: string; // Motivo de cancelación (psicóloga)
+    description?: string; // Motivo de consulta (cliente)
     image?: string; //Voucher o comprobante
 }
