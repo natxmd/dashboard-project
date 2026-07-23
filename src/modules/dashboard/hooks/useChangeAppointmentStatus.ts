@@ -7,11 +7,14 @@ export const useChangeAppointmentStatus = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const changeStatus = async (appointmentId: string, newStatus: EAppointmentStatus) => {
+  const changeStatus = async (appointmentId: string, newStatus: EAppointmentStatus, reason?: string) => {
     setLoading(true);
     setError(null);
     try {
-      const url = `${API_BASE_URL}/appointments/change-appointment-status?appointment_id=${appointmentId}&new_status=${newStatus}`;
+      let url = `${API_BASE_URL}/appointments/change-appointment-status?appointment_id=${appointmentId}&new_status=${newStatus}`;
+      if (reason) {
+        url += `&reason=${encodeURIComponent(reason)}`;
+      }
       const response = await fetch(url, {
         method: "POST",
         headers: {

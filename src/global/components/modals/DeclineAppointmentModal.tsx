@@ -22,8 +22,8 @@ export const DeclineAppointmentModal = ({
   actionText = "rechazar",
   confirmText = "Sí, rechazar",
   cancelText = "No, cancelar",
-  // placeholder = "Escriba la razón aquí...",
-  // reasonLabel = "Razón",
+  placeholder = "Escriba la razón aquí...",
+  reasonLabel = "Razón",
 }: DeclineAppointmentModalProps) => {
   const [reason, setReason] = useState("");
 
@@ -50,7 +50,6 @@ export const DeclineAppointmentModal = ({
           Estás seguro que deseas <span className="font-semibold text-red-500">{actionText}</span> esta cita?
         </p>
 
-        {/* TODO: Habilitar cuando se soporte razón/motivo en BD
         <div className="mt-6 w-full px-1">
           <label htmlFor="decline-reason" className="block text-sm font-medium text-gray-800 mb-2">
             {reasonLabel}
@@ -63,7 +62,7 @@ export const DeclineAppointmentModal = ({
             className="w-full h-24 resize-none rounded-2xl border border-gray-100 bg-white p-4 text-sm text-gray-850 placeholder-gray-300 outline-none transition-all focus:border-red-400 focus:ring-1 focus:ring-red-400/20"
           />
         </div>
-        */}
+       
 
         <div className="h-6" />
       </div>

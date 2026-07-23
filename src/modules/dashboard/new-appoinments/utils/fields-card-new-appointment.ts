@@ -35,4 +35,8 @@ export const getNewAppointmentFields = (
       label: "Método de Pago",
       text: appointment.paymentMethodType,
     },
+    {
+      label: "Motivo de Consulta",
+      text: appointment.description || "No especificado",
+    },
   ];

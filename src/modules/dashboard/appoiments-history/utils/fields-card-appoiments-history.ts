@@ -1,4 +1,4 @@
-import type { IAppointment } from "../../../../interfaces/appointment.interface";
+import { EAppointmentStatus, type IAppointment } from "../../../../interfaces/appointment.interface";
 
 export interface IAppointmentField {
     label: string;
@@ -27,32 +27,43 @@ const statusMap: Record<string, string> = {
     CANCELED: "Cancelada",
 };
 
-export const getHistoryAppointmentFields = (appointment: IAppointment): IAppointmentField[] => [
-    {
-        label: "Paciente",
-        text: appointment.customer.fullName,
-    },
-    {
-        label: "Fecha y Hora",
-        text: new Date(appointment.appointmentDateTime).toLocaleString("es-PE", {
-            dateStyle: "short",
-            timeStyle: "short",
-        }),
-    },
-    {
-        label: "Tipo de Servicio",
-        text: serviceTypeMap[appointment.type] || appointment.type,
-    },
-    {
-        label: "Estado Final",
-        text: statusMap[appointment.status] || appointment.status,
-    },
-    {
-        label: "Método de Pago",
-        text: paymentMethodMap[appointment.paymentMethodType] || appointment.paymentMethodType,
-    },
-    {
-        label: "Motivo / Razón",
-        text: appointment.reason || "Sin observaciones específicas",
-    },
-];
+export const getHistoryAppointmentFields = (appointment: IAppointment): IAppointmentField[] => {
+    const fields: IAppointmentField[] = [
+        {
+            label: "Paciente",
+            text: appointment.customer.fullName,
+        },
+        {
+            label: "Fecha y Hora",
+            text: new Date(appointment.appointmentDateTime).toLocaleString("es-PE", {
+                dateStyle: "short",
+                timeStyle: "short",
+            }),
+        },
+        {
+            label: "Tipo de Servicio",
+            text: serviceTypeMap[appointment.type] || appointment.type,
+        },
+        {
+            label: "Estado Final",
+            text: statusMap[appointment.status] || appointment.status,
+        },
+        {
+            label: "Método de Pago",
+            text: paymentMethodMap[appointment.paymentMethodType] || appointment.paymentMethodType,
+        },
+        {
+            label: "Motivo de Consulta",
+            text: appointment.description || "Sin observaciones específicas",
+        },
+    ];
+
+    if (appointment.status === EAppointmentStatus.CANCELED || appointment.status === EAppointmentStatus.DECLINED) {
+        fields.push({
+            label: "Motivo de Cancelación / Rechazo",
+            text: appointment.reason || "Sin observaciones específicas",
+        });
+    }
+
+    return fields;
+};
