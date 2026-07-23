@@ -1,5 +1,6 @@
 import { useFetchAppointments } from "../hooks/useFetchAppointments";
 import { EAppointmentStatus } from "../../../interfaces/appointment.interface";
+import LoadingPage from "../../../global/components/loading/LoadingPage";
 
 const MainHomePage = () => {
     const { appointments, loading, error, refetch } = useFetchAppointments([
@@ -23,7 +24,7 @@ const MainHomePage = () => {
 
             <div>
                 <h1 className="text-4xl font-bold text-zinc-900">
-                    ¡Bienvenida! 👋
+                    ¡Bienvenida Cinthya! 👋
                 </h1>
 
                 <p className="mt-2 text-zinc-500">
@@ -32,9 +33,9 @@ const MainHomePage = () => {
             </div>
 
             {loading && (
-                <div className="mt-10 py-16 text-center border border-zinc-150 rounded-3xl bg-zinc-50/50">
-                    <p className="text-zinc-500 font-medium">Cargando métricas...</p>
-                </div>
+                <LoadingPage
+                    message="Cargando métricas..."
+                />
             )}
 
             {error && (
